@@ -5,6 +5,7 @@ import fr.epsi.orm.model.Groupe;
 
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
+import java.util.List;
 
 public class GroupeDao extends GenericDao {
 
@@ -36,5 +37,49 @@ public class GroupeDao extends GenericDao {
         } catch (NoResultException e) {
             return null;
         }
+    }
+
+    /**
+     * Find all groupes.
+     * @return list of Groupe, otherwise null.
+     */
+    public List<Groupe> findAll() {
+        TypedQuery<Groupe> query = getEntityManager().createQuery("from Groupe", Groupe.class);
+        try{
+            return query.getResultList();
+        }
+        catch (NoResultException e){
+            return null;
+        }
+    }
+
+    /**
+     * update a groupe by its id.
+     * @param id
+     * @param nom
+     * @return The updated groupe.
+     */
+    public Groupe update(long id, String nom) {
+        Groupe groupe = getEntityManager().find(Groupe.class, id);
+
+        groupe.setNom(nom);
+
+        getEntityManager().getTransaction().begin();
+        getEntityManager().merge(groupe);
+        getEntityManager().getTransaction().commit();
+
+        return groupe;
+    }
+
+    /**
+     * delete a groupe by its id.
+     * @param id
+     */
+    public void delete(long id) {
+        Groupe groupe = getEntityManager().find(Groupe.class, id);
+
+        getEntityManager().getTransaction().begin();
+        getEntityManager().remove(groupe);
+        getEntityManager().getTransaction().commit();
     }
 }
