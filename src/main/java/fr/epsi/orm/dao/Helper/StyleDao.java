@@ -5,6 +5,7 @@ import fr.epsi.orm.model.StyleMusical;
 
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
+import java.util.List;
 
 public class StyleDao extends GenericDao {
 
@@ -26,6 +27,11 @@ public class StyleDao extends GenericDao {
         return (style);
     }
 
+    public List<StyleMusical> findAll(){
+        TypedQuery<StyleMusical> styles = getEntityManager().createQuery("from StyleMusical", StyleMusical.class);
+        return styles.getResultList();
+    }
+
     public StyleMusical findByNom(String nom){
         TypedQuery<StyleMusical> query = getEntityManager().createQuery("from StyleMusical s where s.nom = :nom", StyleMusical.class);
         query.setParameter("nom", nom);
@@ -36,5 +42,29 @@ public class StyleDao extends GenericDao {
         catch (NoResultException e){
             return null;
         }
+    }
+
+    public Long sellsStyle(StyleMusical style){
+        TypedQuery<Long> query = getEntityManager().createQuery("select sum(l.quantite) from LigneCommande l " +
+                "join l.article a where a.id in (" +
+                "select cd.id from CD cd where cd.style = :style)", Long.class);
+        query.setParameter("style", style);
+        if(query.getSingleResult() == null){
+            return (long)0;
+        }
+        return query.getSingleResult();
+    }
+
+    public StyleMusical bestStyle(){
+        List<StyleMusical> styles = findAll();
+        long best = 0;
+        StyleMusical beststyle = new StyleMusical();
+        for(StyleMusical s: styles){
+            if(sellsStyle(s) > best){
+                best = sellsStyle(s);
+                beststyle = s;
+            }
+        }
+        return beststyle;
     }
 }

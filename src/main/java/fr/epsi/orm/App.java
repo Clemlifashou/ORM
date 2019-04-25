@@ -8,6 +8,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.List;
 
 public class App {
     public static void main(String[] args) throws AlreadyExistsException {
@@ -16,13 +19,41 @@ public class App {
             insererPersonnes();
          insererStyles();
         insererGroupes();
-        */
         insererArticles();
+        insererCommande();  
+        */
 
         //Récupérer la totalité des oeuvres d'un artiste
 
+        ArticleDao a = new ArticleDao();
+        /*
+        PersonDao p = new PersonDao();
+        Personne eminem = p.findByNomPrenom("Eminem","");
+        List<CD> cds = a.findArticlesFromArtiste((Artiste)eminem);
+        for(CD cd: cds){
+            System.out.println(cd);
+        }
 
+        //Récupérer la totalité des oeuvres d'un groupe
+        GroupeDao gdao = new GroupeDao();
+        Groupe redhot = gdao.findByNom("Red Hot Chilli Peppers");
+        List<CD> cds2 = a.findArticlesFromGroupe(redhot);
+        for(CD cd: cds2){
+            System.out.println(cd);
+        }
 
+        //Récupérer les sommes des prix de chaque type d'article
+        HashMap<String, Double> list = a.sumAllPrices();
+        for(String s: list.keySet()){
+            System.out.println(s+": "+list.get(s));
+        }
+        */
+
+        insererCommande();
+        StyleDao sdao = new StyleDao();
+        StyleMusical best = sdao.bestStyle();
+        System.out.println(best);
+        System.out.println(sdao.sellsStyle(best));
     }
 
     public static void insererPersonnes(){
@@ -127,5 +158,25 @@ public class App {
                 e.printStackTrace();
             }
         }
+    }
+
+    public static void insererCommande(){
+        ArticleDao adao = new ArticleDao();
+        /*
+        CD slimshady = (CD)adao.findByTitre("The Slim Shady");
+        LigneCommande ligne = new LigneCommande(slimshady,10);
+        Commande cmd = new Commande();
+        cmd.addLigne(ligne);
+*/
+        CommandeDao cmddao = new CommandeDao();
+        //cmddao.insertCommande(cmd);
+
+        CD bssm = (CD)adao.findByTitre("Blood sugar sex  magik");
+        LigneCommande ligne2 = new LigneCommande(bssm,11);
+        Commande cmd2 = new Commande();
+        cmd2.addLigne(ligne2);
+
+
+        cmddao.insertCommande(cmd2);
     }
 }

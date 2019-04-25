@@ -1,6 +1,7 @@
 package fr.epsi.orm.model;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -14,6 +15,7 @@ public class Commande {
     private List<LigneCommande> lignes;
 
     public Commande() {
+        lignes = new ArrayList<LigneCommande>();
     }
 
     public Commande(List<LigneCommande> lignes) {
@@ -30,5 +32,16 @@ public class Commande {
 
     public void setLignes(List<LigneCommande> lignes) {
         this.lignes = lignes;
+    }
+
+    public void addLigne(LigneCommande ligne){
+        this.lignes.add(ligne);
+    }
+
+    @Override
+    public String toString() {
+        return "Commande{" +
+                "lignes=" + lignes +
+                '}';
     }
 }
