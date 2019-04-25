@@ -14,17 +14,36 @@ import java.util.List;
 
 public class App {
     public static void main(String[] args) throws AlreadyExistsException {
+        //      CRUD       //
+
         //création des entités
-        /*
-            insererPersonnes();
-         insererStyles();
+        insererPersonnes();
+        insererStyles();
         insererGroupes();
         insererArticles();
-        insererCommande();  
-        */
+
+
+        //Récupération des entités dans la base :
+        readPersonnes();
+        readStyles();
+        readGroupes();
+        readArticles();
+
+        //Update des entités en base :
+        updatePersonne();
+        updateStyle();
+        updateGroupe();
+        updateArticle();
+
+        //Delete des entités en base :
+        deleteArticle();
+        deleteGroupe();
+        deleteStyle();
+        deletePersonne();
+
+        //  REQUETES COMPLEXES  //
 
         //Récupérer la totalité des oeuvres d'un artiste
-
         ArticleDao a = new ArticleDao();
         /*
         PersonDao p = new PersonDao();
@@ -178,5 +197,113 @@ public class App {
 
 
         cmddao.insertCommande(cmd2);
+    }
+
+    private static void deletePersonne() {
+        PersonDao personDao = new PersonDao();
+
+        personDao.delete(1);
+
+        readPersonnes();
+    }
+
+    private static void deleteStyle() {
+        StyleDao styleDao = new StyleDao();
+
+        styleDao.delete(1);
+
+        readStyles();
+    }
+
+    private static void deleteGroupe() {
+        GroupeDao groupeDao = new GroupeDao();
+
+        groupeDao.delete(1);
+
+        readGroupes();
+    }
+
+    private static void deleteArticle() {
+        ArticleDao articleDao = new ArticleDao();
+
+        articleDao.delete(1);
+
+        readArticles();
+    }
+
+    private static void updateGroupe() {
+        GroupeDao groupeDao = new GroupeDao();
+
+        groupeDao.update(1, "New Red Hot Chilli Peppers");
+
+        readGroupes();
+    }
+
+    private static void updateStyle() {
+        StyleDao styleDao = new StyleDao();
+
+        styleDao.update(3, "Rap/RnB");
+
+        readStyles();
+    }
+
+    private static void updateArticle() {
+        ArticleDao articleDao = new ArticleDao();
+
+        articleDao.update(2, 15.0f, "Californication (limited edition)");
+
+        readArticles();
+    }
+
+    private static void updatePersonne() {
+        PersonDao personDao = new PersonDao();
+
+        personDao.update(4, new Personne("Rowling/Galbraith", "Joanne/Robert"));
+
+        readPersonnes();
+
+    }
+
+    private static void readArticles() {
+        ArticleDao articleDao = new ArticleDao();
+
+        List<Article> articles = articleDao.findAll();
+
+        for (Article article : articles) {
+            System.out.println(article);
+        }
+    }
+
+    private static void readGroupes() {
+        GroupeDao groupeDao = new GroupeDao();
+
+        List<Groupe> groupes = groupeDao.findAll();
+
+        for (Groupe groupe : groupes)
+        {
+            System.out.println(groupe);
+        }
+    }
+
+    private static void readStyles() {
+        StyleDao styleDao = new StyleDao();
+
+        List<StyleMusical> styleMusicaux = styleDao.findAll();
+
+        for (StyleMusical styleMusical : styleMusicaux)
+        {
+            System.out.println(styleMusical);
+        }
+    }
+
+    private static void readPersonnes() {
+        PersonDao personDao = new PersonDao();
+
+        List<Personne> personnes = personDao.findAll();
+
+        for (Personne personne : personnes)
+        {
+            System.out.println(personne);
+        }
     }
 }

@@ -83,4 +83,47 @@ public class ArticleDao extends GenericDao {
         list.put("DVD", sumPrices("DVD"));
         return list;
     }
+
+    /**
+     * Update a article by its id.
+     * @param id that is the id of the changing article.
+     * @return The update article.
+     */
+    public Article update (long id, float prix, String titre) {
+        Article bddArticle = getEntityManager().find(Article.class, id);
+        bddArticle.setPrix(prix);
+        bddArticle.setTitre(titre);
+
+        getEntityManager().getTransaction().begin();
+        getEntityManager().merge(bddArticle);
+        getEntityManager().getTransaction().commit();
+
+        return bddArticle;
+    }
+
+    /**
+     * Delete a article by its id.
+     * @param id
+     */
+    public void delete(long id) {
+        Article bddArticle = getEntityManager().find(Article.class, id);
+
+        getEntityManager().getTransaction().begin();
+        getEntityManager().remove(bddArticle);
+        getEntityManager().getTransaction().commit();
+    }
+
+    /**
+     * Finds all articles.
+     * @return list of articles, otherwise null.
+     */
+    public List<Article> findAll() {
+        TypedQuery<Article> query = getEntityManager().createQuery("from Article", Article.class);
+        try{
+            return query.getResultList();
+        }
+        catch (NoResultException e){
+            return null;
+        }
+    }
 }

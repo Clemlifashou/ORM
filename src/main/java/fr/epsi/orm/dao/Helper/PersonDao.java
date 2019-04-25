@@ -7,6 +7,7 @@ import fr.epsi.orm.model.Personne;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
+import java.util.List;
 
 public class PersonDao extends GenericDao {
 
@@ -39,5 +40,58 @@ public class PersonDao extends GenericDao {
         catch (NoResultException e){
             return null;
         }
+    }
+
+    /**
+     * Find all personnes.
+     * @return list of Personne, otherwise null.
+     */
+    public List<Personne> findAll() {
+        TypedQuery<Personne> query = getEntityManager().createQuery("from Personne", Personne.class);
+        try{
+            return query.getResultList();
+        }
+        catch (NoResultException e){
+            return null;
+        }
+    }
+
+    /**
+     * Find a personne by its nom and prenom.
+     * @param id
+     * @return The matching Personne, otherwise null.
+     */
+    public Personne findById(long id){
+        return getEntityManager().find(Personne.class, id);
+    }
+
+    /**
+     * update a personne by its id.
+     * @param id
+     * @param personne
+     * @return The updated Personne.
+     */
+    public Personne update(long id, Personne personne) {
+        Personne bddPersonne = getEntityManager().find(Personne.class, id);
+        bddPersonne.setNom(personne.getNom());
+        bddPersonne.setPrenom(personne.getPrenom());
+
+        getEntityManager().getTransaction().begin();
+        getEntityManager().merge(bddPersonne);
+        getEntityManager().getTransaction().commit();
+
+        return bddPersonne;
+    }
+
+    /**
+     * delete a Personne by its id.
+     * @param id
+     */
+    public void delete(long id) {
+        Personne bddPersonne = getEntityManager().find(Personne.class, id);
+
+        getEntityManager().getTransaction().begin();
+        getEntityManager().remove(bddPersonne);
+        getEntityManager().getTransaction().commit();
     }
 }
