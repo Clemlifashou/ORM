@@ -36,10 +36,11 @@ public class App {
         updateArticle();
 
         //Delete des entités en base :
-        deleteArticle();
+        /*deleteArticle();
         deleteGroupe();
         deleteStyle();
         deletePersonne();
+        */
 
         //  REQUETES COMPLEXES  //
 
