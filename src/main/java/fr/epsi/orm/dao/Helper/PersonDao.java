@@ -67,20 +67,23 @@ public class PersonDao extends GenericDao {
 
     /**
      * update a personne by its id.
-     * @param id
-     * @param personne
+     * @param nom, prenom, nouveaunom, nouveauprenom
      * @return The updated Personne.
      */
-    public Personne update(long id, Personne personne) {
-        Personne bddPersonne = getEntityManager().find(Personne.class, id);
-        bddPersonne.setNom(personne.getNom());
-        bddPersonne.setPrenom(personne.getPrenom());
+    public Personne updateNomPrenom(String nom, String prenom, String nouveaunom, String nouveauprenom) {
+        Personne Personne = findByNomPrenom(nom, prenom);
+        if(!nouveaunom.equals("")){
+            Personne.setNom(nouveaunom);
+        }
+        if(!nouveauprenom.equals("")){
+            Personne.setPrenom(nouveauprenom);
+        }
 
         getEntityManager().getTransaction().begin();
-        getEntityManager().merge(bddPersonne);
+        getEntityManager().merge(Personne);
         getEntityManager().getTransaction().commit();
 
-        return bddPersonne;
+        return Personne;
     }
 
     /**

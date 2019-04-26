@@ -70,19 +70,19 @@ public class StyleDao extends GenericDao {
 
     /**
      * update a musical style by its id.
-     * @param id
-     * @param style
+     * @param nom
+     * @param nouveaunom
      * @return The updated Musical Style.
      */
-    public StyleMusical update(long id, String style) {
-        StyleMusical styleMusical = getEntityManager().find(StyleMusical.class, id);
+    public StyleMusical updateNom(String nom, String nouveaunom) {
+        StyleMusical styleMusical = findByNom(nom);
+        if(!nouveaunom.equals("")){
+            styleMusical.setNom("Rap/RnB");
 
-        styleMusical.setNom("Rap/RnB");
-
-        getEntityManager().getTransaction().begin();
-        getEntityManager().merge(styleMusical);
-        getEntityManager().getTransaction().commit();
-
+            getEntityManager().getTransaction().begin();
+            getEntityManager().merge(styleMusical);
+            getEntityManager().getTransaction().commit();
+        }
         return styleMusical;
     }
 

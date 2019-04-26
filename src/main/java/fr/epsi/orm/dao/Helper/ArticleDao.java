@@ -89,16 +89,21 @@ public class ArticleDao extends GenericDao {
      * @param id that is the id of the changing article.
      * @return The update article.
      */
-    public Article update (long id, float prix, String titre) {
-        Article bddArticle = getEntityManager().find(Article.class, id);
-        bddArticle.setPrix(prix);
-        bddArticle.setTitre(titre);
+    public Article update (String titre, float prix, String nouveautitre) {
+        Article article = findByTitre(titre);
+        if(!titre.equals("")){
+           article.setTitre(nouveautitre);
+        }
+        if(prix != 0){
+            article.setPrix(prix);
+        }
+
 
         getEntityManager().getTransaction().begin();
-        getEntityManager().merge(bddArticle);
+        getEntityManager().merge(article);
         getEntityManager().getTransaction().commit();
 
-        return bddArticle;
+        return article;
     }
 
     /**

@@ -21,6 +21,7 @@ public class App {
         insererStyles();
         insererGroupes();
         insererArticles();
+        insererCommande();
 
 
         //Récupération des entités dans la base :
@@ -46,18 +47,20 @@ public class App {
 
         //Récupérer la totalité des oeuvres d'un artiste
         ArticleDao a = new ArticleDao();
-        /*
         PersonDao p = new PersonDao();
         Personne eminem = p.findByNomPrenom("Eminem","");
         List<CD> cds = a.findArticlesFromArtiste((Artiste)eminem);
+        System.out.println("Voici les articles d'eminem: ");
         for(CD cd: cds){
             System.out.println(cd);
         }
 
         //Récupérer la totalité des oeuvres d'un groupe
         GroupeDao gdao = new GroupeDao();
-        Groupe redhot = gdao.findByNom("Red Hot Chilli Peppers");
+        Groupe redhot = gdao.findByNom("New Red Hot Chilli Peppers");
+        System.out.println(redhot);
         List<CD> cds2 = a.findArticlesFromGroupe(redhot);
+        System.out.println("Voici les articles des Red Hot: ");
         for(CD cd: cds2){
             System.out.println(cd);
         }
@@ -65,15 +68,13 @@ public class App {
         //Récupérer les sommes des prix de chaque type d'article
         HashMap<String, Double> list = a.sumAllPrices();
         for(String s: list.keySet()){
-            System.out.println(s+": "+list.get(s));
+            System.out.println("La somme des prix de " + s +": "+list.get(s));
         }
-        */
 
-        insererCommande();
+        //Récupérer la catégorie musicale le qui rencontre le meillleur succès
         StyleDao sdao = new StyleDao();
         StyleMusical best = sdao.bestStyle();
-        System.out.println(best);
-        System.out.println(sdao.sellsStyle(best));
+        System.out.println("L'article qui a vendu le plus est " + best + "avec " + sdao.sellsStyle(best) + "ventes.");
     }
 
     public static void insererPersonnes(){
@@ -182,14 +183,14 @@ public class App {
 
     public static void insererCommande(){
         ArticleDao adao = new ArticleDao();
-        /*
+
         CD slimshady = (CD)adao.findByTitre("The Slim Shady");
         LigneCommande ligne = new LigneCommande(slimshady,10);
         Commande cmd = new Commande();
         cmd.addLigne(ligne);
-*/
+
         CommandeDao cmddao = new CommandeDao();
-        //cmddao.insertCommande(cmd);
+        cmddao.insertCommande(cmd);
 
         CD bssm = (CD)adao.findByTitre("Blood sugar sex  magik");
         LigneCommande ligne2 = new LigneCommande(bssm,11);
@@ -235,7 +236,7 @@ public class App {
     private static void updateGroupe() {
         GroupeDao groupeDao = new GroupeDao();
 
-        groupeDao.update(1, "New Red Hot Chilli Peppers");
+        groupeDao.updateNom("Red Hot Chilli Peppers", "New Red Hot Chilli Peppers");
 
         readGroupes();
     }
@@ -243,7 +244,7 @@ public class App {
     private static void updateStyle() {
         StyleDao styleDao = new StyleDao();
 
-        styleDao.update(3, "Rap/RnB");
+        styleDao.updateNom("Rap", "Rap/RnB");
 
         readStyles();
     }
@@ -251,7 +252,7 @@ public class App {
     private static void updateArticle() {
         ArticleDao articleDao = new ArticleDao();
 
-        articleDao.update(2, 15.0f, "Californication (limited edition)");
+        articleDao.update("Californication", 15.0f, "Californication (limited edition)");
 
         readArticles();
     }
@@ -259,7 +260,7 @@ public class App {
     private static void updatePersonne() {
         PersonDao personDao = new PersonDao();
 
-        personDao.update(4, new Personne("Rowling/Galbraith", "Joanne/Robert"));
+        personDao.updateNomPrenom("Joanne", "Rowling","Rowling/Galbraith", "Joanne/Robert");
 
         readPersonnes();
 

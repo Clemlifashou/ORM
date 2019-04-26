@@ -55,19 +55,19 @@ public class GroupeDao extends GenericDao {
 
     /**
      * update a groupe by its id.
-     * @param id
      * @param nom
+     * @param nouveaunom
      * @return The updated groupe.
      */
-    public Groupe update(long id, String nom) {
-        Groupe groupe = getEntityManager().find(Groupe.class, id);
+    public Groupe updateNom( String nom, String nouveaunom) {
+        Groupe groupe = findByNom(nom);
+        if(!nouveaunom.equals("")){
+            groupe.setNom(nouveaunom);
 
-        groupe.setNom(nom);
-
-        getEntityManager().getTransaction().begin();
-        getEntityManager().merge(groupe);
-        getEntityManager().getTransaction().commit();
-
+            getEntityManager().getTransaction().begin();
+            getEntityManager().merge(groupe);
+            getEntityManager().getTransaction().commit();
+        }
         return groupe;
     }
 
